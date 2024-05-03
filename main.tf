@@ -433,13 +433,6 @@ resource "aws_security_group" "rds_sg" {
     protocol    = "tcp"
     security_groups = [aws_security_group.ec2_sg.id]
   }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = []
-    }
 }
 
 # キーペアの作成
@@ -542,3 +535,27 @@ output "alb_dns_name" {
 output "ec2_public_ip" {
   value = aws_eip.mamorukun-ec2-eip.public_ip
 }
+
+# GitHub Copilot、パフォーマンスを向上させるためにこの構成を改善するにはどうすればよいですか?
+# 1. モジュールを使用してコードを再利用する
+# 2. パラメータを使用してコードを柔軟にする
+# 3. リソースの命名規則を統一する
+# 4. ドキュメントを追加してコードを説明する
+# 5. テストを追加してコードを検証する
+# 6. デプロイメントパイプラインを追加してコードを自動化する
+# 7. ログとメトリクスを追加してコードを監視する
+# 8. セキュリティを追加してコードを保護する
+# 9. コストを追加してコードを最適化する
+# 10. バージョン管理を追加してコードを追跡する
+
+# この構成を改善するために、どのツールやサービスを使用することができますか?
+# 1. Terraform Cloud
+# 2. AWS CloudFormation
+# 3. AWS CDK
+# 4. GitHub Actions
+# 5. AWS CodePipeline
+# 6. AWS CloudWatch
+# 7. AWS Config
+# 8. AWS Security Hub
+# 9. AWS Cost Explorer
+# 10. GitHub
