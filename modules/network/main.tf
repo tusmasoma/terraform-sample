@@ -3,20 +3,20 @@ data "aws_availability_zones" "available" {
 }
 
 resource "aws_vpc" "vpc" {
-    cidr_block = var.cidr_vpc
-    instance_tenancy = "default"
-    enable_dns_support = true
-    enable_dns_hostnames = true
-    tags = {
-        Name = "${var.system}-${var.env}-vpc"
-    }
+  cidr_block           = var.cidr_vpc
+  instance_tenancy     = "default"
+  enable_dns_support   = true
+  enable_dns_hostnames = true
+  tags = {
+    Name = "${var.system}-${var.env}-vpc"
+  }
 }
 
 resource "aws_internet_gateway" "igw" {
-    vpc_id = aws_vpc.vpc.id
-    tags = {
-        Name = "${var.system}-${var.env}-igw"
-    }
+  vpc_id = aws_vpc.vpc.id
+  tags = {
+    Name = "${var.system}-${var.env}-igw"
+  }
 }
 
 resource "aws_subnet" "public" {
@@ -96,9 +96,9 @@ resource "aws_network_acl" "main" {
   vpc_id = aws_vpc.vpc.id
   subnet_ids = compact(
     flatten([
-        aws_subnet.public.*.id,
-        aws_subnet.private.*.id,
-        aws_subnet.secure.*.id
+      aws_subnet.public.*.id,
+      aws_subnet.private.*.id,
+      aws_subnet.secure.*.id
     ])
   )
   tags = {
@@ -107,67 +107,67 @@ resource "aws_network_acl" "main" {
 }
 
 resource "aws_network_acl_rule" "inbound_allow_http" {
-    network_acl_id = aws_network_acl.main.id
-    rule_number    = 100
-    protocol       = "tcp"
-    rule_action    = "allow"
-    egress         = false
-    cidr_block     = "0.0.0.0/0"
-    from_port      = 80
-    to_port        = 80
+  network_acl_id = aws_network_acl.main.id
+  rule_number    = 100
+  protocol       = "tcp"
+  rule_action    = "allow"
+  egress         = false
+  cidr_block     = "0.0.0.0/0"
+  from_port      = 80
+  to_port        = 80
 }
 
 resource "aws_network_acl_rule" "inbound_allow_https" {
-    network_acl_id = aws_network_acl.main.id
-    rule_number    = 110
-    protocol       = "tcp"
-    rule_action    = "allow"
-    egress         = false
-    cidr_block     = "0.0.0.0/0"
-    from_port      = 443
-    to_port        = 443
+  network_acl_id = aws_network_acl.main.id
+  rule_number    = 110
+  protocol       = "tcp"
+  rule_action    = "allow"
+  egress         = false
+  cidr_block     = "0.0.0.0/0"
+  from_port      = 443
+  to_port        = 443
 }
 
 resource "aws_network_acl_rule" "inbound_deny_all" {
-    network_acl_id = aws_network_acl.main.id
-    rule_number    = 200
-    protocol       = "-1"
-    rule_action    = "deny"
-    egress         = false
-    cidr_block     = "0.0.0.0/0"
-    from_port      = 0
-    to_port        = 0
+  network_acl_id = aws_network_acl.main.id
+  rule_number    = 200
+  protocol       = "-1"
+  rule_action    = "deny"
+  egress         = false
+  cidr_block     = "0.0.0.0/0"
+  from_port      = 0
+  to_port        = 0
 }
 
 resource "aws_network_acl_rule" "outbound_allow_http" {
-    network_acl_id = aws_network_acl.main.id
-    rule_number    = 100
-    protocol       = "tcp"
-    rule_action    = "allow"
-    egress         = true
-    cidr_block     = "0.0.0.0/0"
-    from_port      = 80
-    to_port        = 80
+  network_acl_id = aws_network_acl.main.id
+  rule_number    = 100
+  protocol       = "tcp"
+  rule_action    = "allow"
+  egress         = true
+  cidr_block     = "0.0.0.0/0"
+  from_port      = 80
+  to_port        = 80
 }
 
 resource "aws_network_acl_rule" "outbound_allow_https" {
-    network_acl_id = aws_network_acl.main.id
-    rule_number    = 110
-    protocol       = "tcp"
-    rule_action    = "allow"
-    egress         = true
-    cidr_block     = "0.0.0.0/0"
-    from_port      = 443
-    to_port        = 443
+  network_acl_id = aws_network_acl.main.id
+  rule_number    = 110
+  protocol       = "tcp"
+  rule_action    = "allow"
+  egress         = true
+  cidr_block     = "0.0.0.0/0"
+  from_port      = 443
+  to_port        = 443
 }
 
 resource "aws_network_acl_rule" "outbound_deny_all" {
-    network_acl_id = aws_network_acl.main.id
-    rule_number    = 200
-    protocol       = "-1"
-    rule_action    = "deny"
-    egress         = true
-    cidr_block     = "0.0.0.0/0"
-    from_port      = 0
-    to_port        = 0
+  network_acl_id = aws_network_acl.main.id
+  rule_number    = 200
+  protocol       = "-1"
+  rule_action    = "deny"
+  egress         = true
+  cidr_block     = "0.0.0.0/0"
+  from_port      = 0
+  to_port        = 0
 }

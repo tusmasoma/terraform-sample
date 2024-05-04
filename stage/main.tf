@@ -10,54 +10,54 @@ terraform {
 }
 
 provider "aws" {
-    profile = "default"
-    region = "ap-northeast-1"
+  profile = "default"
+  region  = "ap-northeast-1"
 }
 
 module "network" {
-    source = "../modules/network"
-    cidr_vpc = var.cidr_vpc
-    cidr_public = var.cidr_public
-    cidr_private = var.cidr_private
-    cidr_secure = var.cidr_secure
-    system = var.system
-    env = var.env
+  source       = "../modules/network"
+  cidr_vpc     = var.cidr_vpc
+  cidr_public  = var.cidr_public
+  cidr_private = var.cidr_private
+  cidr_secure  = var.cidr_secure
+  system       = var.system
+  env          = var.env
 }
 
 module "ec2" {
-    source = "../modules/ec2"
-    system = var.system
-    env = var.env
+  source = "../modules/ec2"
+  system = var.system
+  env    = var.env
 
-    instance_count = var.instance_count
-    instance_type = var.instance_type
-    ami = var.ami
-    disable_api_termination = var.disable_api_termination
-    subnets = module.network.private_subnet_ids
-    security_group_ids = [module.security_group.ec2_web_to_db_security_group_id]
+  instance_count          = var.instance_count
+  instance_type           = var.instance_type
+  ami                     = var.ami
+  disable_api_termination = var.disable_api_termination
+  subnets                 = module.network.private_subnet_ids
+  security_group_ids      = [module.security_group.ec2_web_to_db_security_group_id]
 }
 
 module "alb" {
-    source = "../modules/alb"
-    system = var.system
-    env = var.env
-    vpc_id = module.network.vpc_id
-    subnets = module.network.public_subnet_ids
-    instance_ids = module.ec2.instance_ids
-    security_group_ids = [module.security_group.alb_security_group_id]
+  source             = "../modules/alb"
+  system             = var.system
+  env                = var.env
+  vpc_id             = module.network.vpc_id
+  subnets            = module.network.public_subnet_ids
+  instance_ids       = module.ec2.instance_ids
+  security_group_ids = [module.security_group.alb_security_group_id]
 }
 
 module "nat_gateway" {
-    source = "../modules/nat_gateway"
-    system = var.system
-    env = var.env
-    subnet_id = module.network.public_subnet_ids[0]
+  source    = "../modules/nat_gateway"
+  system    = var.system
+  env       = var.env
+  subnet_id = module.network.public_subnet_ids[0]
 }
 
 module "rds" {
   source                  = "../modules/rds"
-  system = var.system
-  env = var.env
+  system                  = var.system
+  env                     = var.env
   subnets                 = module.network.private_subnet_ids
   allocated_storage       = var.rds_allocated_storage
   storage_type            = var.rds_storage_type
@@ -72,15 +72,15 @@ module "rds" {
   storage_encrypted       = var.rds_storage_encrypted
   skip_final_snapshot     = var.rds_skip_final_snapshot
   backup_retention_period = var.rds_backup_retention_period
-  backup_window = var.rds_backup_window
-  maintenance_window = var.rds_maintenance_window
-  parameter_family    = var.rds_parameter_family
+  backup_window           = var.rds_backup_window
+  maintenance_window      = var.rds_maintenance_window
+  parameter_family        = var.rds_parameter_family
 }
 
 
 module "security_group" {
-    source = "../modules/security_group"
-    name = var.name
-    env = var.env
-    vpc_id = module.network.vpc_id
+  source = "../modules/security_group"
+  name   = var.name
+  env    = var.env
+  vpc_id = module.network.vpc_id
 }
