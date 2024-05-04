@@ -1,4 +1,4 @@
-# ALB Module
+# ALB モジュール
 
 ## 概要
 このTerraformモジュールは、指定されたAWS環境内でApplication Load Balancer (ALB)を設定します。内部またはインターネット向けのトラフィックを処理するために設計されており、スケーラビリティと高可用性を提供します。
