@@ -57,7 +57,7 @@ resource "aws_security_group" "rds_sg" {
     from_port       = 5432
     to_port         = 5432
     protocol        = "tcp"
-    security_groups = [aws_security_group.ec2_web_to_db_sg.id]
+    cidr_blocks     = ["0.0.0.0/0"]
   }
 
   tags = {
@@ -81,7 +81,7 @@ resource "aws_security_group" "alb_sg" {
     from_port       = 80
     to_port         = 80
     protocol        = "tcp"
-    security_groups = [aws_security_group.ec2_web_to_db_sg.id]
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   tags = {

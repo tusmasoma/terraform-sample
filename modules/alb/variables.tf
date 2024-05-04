@@ -23,7 +23,7 @@ variable "vpc_id" {
     type        = string
 }
 
-variable "target_id" {
-  description = "The ID of the target instance"
-  type        = string
+variable "instance_ids" {
+    description = "The instance IDs"
+    type        = list(string)
 }

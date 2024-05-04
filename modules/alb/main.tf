@@ -3,18 +3,18 @@ resource "aws_lb" "alb" {
     internal = false
     load_balancer_type = "application"
     security_groups = var.security_group_ids
-    subnet_ids = tolist(var.subnets)
+    subnets = tolist(var.subnets)
 
     enable_deletion_protection = false
     enable_http2               = true
     enable_cross_zone_load_balancing = true
     idle_timeout = 60
 
-    access_logs {
-        bucket = "${var.env}-${var.system}-alb-logs"
-        prefix = "alb"
-        enabled = true
-    }
+    //access_logs {
+    //    bucket = "${var.env}-${var.system}-alb-logs"
+    //    prefix = "alb"
+    //    enabled = true
+    //}
 
     tags = {
         Name = "${var.env}-${var.system}-alb"
@@ -42,16 +42,17 @@ resource "aws_lb_target_group" "tg" {
     }
 }
 
-resource "aws_lb_listener" "listener443" {
-    load_balancer_arn = aws_lb.alb.arn
-    port              = "443"
-    protocol          = "HTTPS"
-
-    default_action {
-        type             = "forward"
-        target_group_arn = aws_lb_target_group.tg.arn
-    }
-}
+# TODO: SSL/TLS証明書発行後に設定
+//resource "aws_lb_listener" "listener443" {
+//    load_balancer_arn = aws_lb.alb.arn
+//    port              = "443"
+//    protocol          = "HTTPS"
+//
+//    default_action {
+//        type             = "forward"
+//        target_group_arn = aws_lb_target_group.tg.arn
+//    }
+//}
 
 resource "aws_lb_listener" "listener80" {
     load_balancer_arn = aws_lb.alb.arn
@@ -65,7 +66,8 @@ resource "aws_lb_listener" "listener80" {
 }
 
 resource "aws_lb_target_group_attachment" "tg_attachment" {
+    count            = length(var.instance_ids)
     target_group_arn = aws_lb_target_group.tg.arn
-    target_id        = var.target_id
+    target_id        = element(var.instance_ids, count.index)
     port             = 80
 }

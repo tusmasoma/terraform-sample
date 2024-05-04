@@ -17,7 +17,7 @@ variable "vpc_id" {
 }
 
 variable "subnets" {
-    description = "The subnets"
+    description = "The subnets to deploy the instance into"
     type        = list(string)
     default     = []
 }
@@ -25,7 +25,7 @@ variable "subnets" {
 variable "ami" {
     description = "The AMI to use for the instance"
     type        = string
-    default     = "ami-0c55b159cbfafe1f0"
+    default     = "ami-0c1de55b79f5aff9b"
 }
 
 variable "instance_type" {
