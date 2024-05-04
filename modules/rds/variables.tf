@@ -31,15 +31,15 @@ variable "instance_class" {
   description = "The instance type of the RDS instance (e.g., db.m4.large)"
 }
 
-variable "rds_name" {
+variable "db_name" {
   description = "The name of the database to create when the DB instance is created"
 }
 
-variable "rds_username" {
+variable "username" {
   description = "Username for the database administrator"
 }
 
-variable "rds_password" {
+variable "password" {
   description = "Password for the database administrator"
 }
 
@@ -68,14 +68,14 @@ variable "backup_retention_period" {
   default     = 7
 }
 
-variable "preferred_backup_window" {
+variable "backup_window" {
   description = "The daily time range during which automated backups are created"
 }
 
-variable "preferred_maintenance_window" {
+variable "maintenance_window" {
   description = "The weekly time range during which system maintenance can occur"
 }
 
-variable "rds_parameter_family" {
+variable "parameter_family" {
   description = "The family of the DB parameter group"
 }

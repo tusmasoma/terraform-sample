@@ -24,3 +24,19 @@ ami = "ami-0c1de55b79f5aff9b"
 disable_api_termination = false
 
 name = "mamorukun"
+
+rds_allocated_storage = 20
+rds_storage_type = "gp2"
+rds_engine = "mysql"
+rds_engine_version = "5.7"
+rds_instance_class = "db.t3.medium"
+rds_db_name = "mydatabase"
+rds_username = "adminuser"
+rds_password = "verysecretpassword"
+rds_multi_az = true
+rds_storage_encrypted = true
+rds_skip_final_snapshot = false
+rds_backup_retention_period = 7
+rds_backup_window = "03:00-04:00"
+rds_maintenance_window = "sun:04:00-sun:05:00"
+rds_parameter_family = "mysql5.7"
