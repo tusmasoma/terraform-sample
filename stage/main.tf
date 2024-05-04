@@ -47,6 +47,13 @@ module "alb" {
     security_group_ids = [module.security_group.alb_security_group_id]
 }
 
+module "nat_gateway" {
+    source = "../modules/nat_gateway"
+    system = var.system
+    env = var.env
+    subnet_id = module.network.public_subnet_ids[0]
+}
+
 module "rds" {
   source                  = "../modules/rds"
   system = var.system
