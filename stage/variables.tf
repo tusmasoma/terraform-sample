@@ -63,3 +63,67 @@ variable "disable_api_termination" {
     type        = bool
     default     = false
 }
+
+variable "rds_allocated_storage" {
+  description = "The allocated storage size for the RDS instance (in gigabytes)"
+}
+
+variable "rds_storage_type" {
+  description = "The type of storage for the RDS instance (e.g., gp2, io1)"
+}
+
+variable "rds_engine" {
+  description = "The database engine to use for the RDS instance (e.g., mysql, postgresql)"
+}
+
+variable "rds_engine_version" {
+  description = "The version of the database engine for the RDS instance"
+}
+
+variable "rds_instance_class" {
+  description = "The instance type of the RDS instance (e.g., db.m4.large)"
+}
+
+variable "rds_db_name" {
+  description = "The name of the database to create within the RDS instance"
+}
+
+variable "rds_username" {
+  description = "Username for the RDS database administrator"
+}
+
+variable "rds_password" {
+  description = "Password for the RDS database administrator"
+}
+
+variable "rds_multi_az" {
+  description = "Specifies if the RDS instance is multi-AZ"
+  default     = false
+}
+
+variable "rds_storage_encrypted" {
+  description = "Specifies whether the RDS instance is encrypted"
+  default     = false
+}
+
+variable "rds_skip_final_snapshot" {
+  description = "Determines whether a final DB snapshot is created before the RDS instance is deleted"
+  default     = true
+}
+
+variable "rds_backup_retention_period" {
+  description = "The number of days to retain backups for the RDS instance"
+  default     = 7
+}
+
+variable "rds_backup_window" {
+  description = "The daily time range during which automated backups are created for the RDS instance"
+}
+
+variable "rds_maintenance_window" {
+  description = "The weekly time range during which system maintenance can occur on the RDS instance"
+}
+
+variable "rds_parameter_family" {
+  description = "The family of the DB parameter group for the RDS instance"
+}
