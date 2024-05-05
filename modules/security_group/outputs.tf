@@ -3,9 +3,14 @@ output "ec2_security_group_id" {
   description = "The ID of the EC2 security group"
 }
 
-output "alb_security_group_id" {
-  value       = aws_security_group.alb_sg.id
-  description = "The ID of the ALB security group"
+output "alb_from_443_to_80_security_group_id" {
+  value       = aws_security_group.alb_sg_from_443_to_80.id
+  description = "The ID of the ALB security group from 443 to 80"
+}
+
+output "alb_from_80_to_443_redirect_security_group_id" {
+  value       = aws_security_group.alb_sg_from_80_to_443_redirect.id
+  description = "The ID of the ALB security group from 80 to 443 redirect"
 }
 
 output "rds_security_group_id" {

@@ -32,7 +32,7 @@ resource "aws_security_group" "ec2_web_to_db_sg" {
     from_port       = 80
     to_port         = 80
     protocol        = "tcp"
-    security_groups = [aws_security_group.alb_sg.id]
+    security_groups = [aws_security_group.alb_sg_from_443_to_80.id]
   }
 
   # アウトバウンドルール: RDSへのPostgreSQL (TCP 5432)
@@ -65,26 +65,54 @@ resource "aws_security_group" "rds_sg" {
   }
 }
 
-resource "aws_security_group" "alb_sg" {
-  name        = "alb-sg"
+resource "aws_security_group" "alb_sg_from_443_to_80" {
+  name        = "443-80-loadbalancer-sg"
   description = "Security group for ALB"
   vpc_id      = var.vpc_id
 
   ingress {
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    from_port        = 443
+    to_port          = 443
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
   }
 
   egress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    from_port        = 80
+    to_port          = 80
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
   }
 
   tags = {
-    Name = "alb-sg"
+    Name = "alb-sg-from-443-to-80"
+  }
+}
+
+resource "aws_security_group" "alb_sg_from_80_to_443_redirect" {
+  name        = "80-443redirect-sg"
+  description = "Security group for ALB"
+  vpc_id      = var.vpc_id
+
+  ingress {
+    from_port        = 80
+    to_port          = 80
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+  egress {
+    from_port        = 443
+    to_port          = 443
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+  tags = {
+    Name = "alb-sg-from-80-to-443-redirect"
   }
 }

@@ -44,7 +44,7 @@ module "alb" {
   vpc_id             = module.network.vpc_id
   subnets            = module.network.public_subnet_ids
   instance_ids       = module.ec2.instance_ids
-  security_group_ids = [module.security_group.alb_security_group_id]
+  security_group_ids = [module.security_group.alb_from_443_to_80_security_group_id, module.security_group.alb_from_80_to_443_redirect_security_group_id]
 }
 
 module "nat_gateway" {
