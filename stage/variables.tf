@@ -40,6 +40,12 @@ variable "env" {
   default     = ""
 }
 
+variable "domain_name" {
+  description = "The domain name for creating the Route 53 zone and related records."
+  type        = string
+  default     = "example.com"
+}
+
 variable "instance_count" {
   description = "The number of instances to deploy"
   type        = number

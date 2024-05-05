@@ -42,17 +42,19 @@ resource "aws_lb_target_group" "tg" {
   }
 }
 
-# TODO: SSL/TLS証明書発行後に設定
-//resource "aws_lb_listener" "listener443" {
-//    load_balancer_arn = aws_lb.alb.arn
-//    port              = "443"
-//    protocol          = "HTTPS"
-//
-//    default_action {
-//        type             = "forward"
-//        target_group_arn = aws_lb_target_group.tg.arn
-//    }
-//}
+resource "aws_lb_listener" "listener443" {
+  load_balancer_arn = aws_lb.alb.arn
+  port              = "443"
+  protocol          = "HTTPS"
+  ssl_policy        = "ELBSecurityPolicy-2016-08"
+
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.tg.arn
+  }
+
+  certificate_arn = var.cert_arn
+}
 
 resource "aws_lb_listener" "listener80" {
   load_balancer_arn = aws_lb.alb.arn

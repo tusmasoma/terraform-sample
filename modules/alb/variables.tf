@@ -27,3 +27,8 @@ variable "instance_ids" {
   description = "The instance IDs"
   type        = list(string)
 }
+
+variable "cert_arn" {
+  description = "The ARN of the SSL/TLS certificate issued for the domain"
+  type        = string
+}
