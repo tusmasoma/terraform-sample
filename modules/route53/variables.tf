@@ -8,3 +8,8 @@ variable "alb_dns_name" {
   description = "The DNS name of the Application Load Balancer to be used in A records."
   type        = string
 }
+
+variable "alb_zone_id" {
+  description = "The Route 53 zone ID for the ALB"
+  type        = string
+}

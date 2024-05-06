@@ -15,6 +15,8 @@ cidr_private = [
   "10.1.103.0/24"
 ]
 
+domain_name = "medilab-mamoru-kun-test.com"
+
 instance_count = 1
 
 instance_type = "t2.micro"

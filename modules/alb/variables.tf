@@ -28,7 +28,8 @@ variable "instance_ids" {
   type        = list(string)
 }
 
-variable "cert_arn" {
-  description = "The ARN of the SSL/TLS certificate issued for the domain"
+variable "domain_name" {
+  description = "The domain name for creating the Route 53 zone and related records."
   type        = string
+  default     = "example.com"
 }

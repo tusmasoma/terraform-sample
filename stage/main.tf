@@ -28,6 +28,7 @@ module "route53" {
   source       = "../modules/route53"
   domain_name  = var.domain_name
   alb_dns_name = module.alb.alb_dns_name
+  alb_zone_id  = module.alb.alb_zone_id
 }
 
 module "ec2" {
@@ -50,8 +51,8 @@ module "alb" {
   vpc_id             = module.network.vpc_id
   subnets            = module.network.public_subnet_ids
   instance_ids       = module.ec2.instance_ids
-  cert_arn           = module.route53.acm_certificate_arn
   security_group_ids = [module.security_group.alb_from_443_to_80_security_group_id, module.security_group.alb_from_80_to_443_redirect_security_group_id]
+  domain_name        = var.domain_name
 }
 
 module "nat_gateway" {
