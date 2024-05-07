@@ -14,6 +14,24 @@ provider "aws" {
   region  = "ap-northeast-1"
 }
 
+data "aws_acm_certificate" "cert_domain_name" {
+  domain      = var.domain_name
+  statuses    = ["ISSUED"]
+  most_recent = true
+}
+
+data "aws_acm_certificate" "cert_app_domain_name" {
+  domain      = "app.${var.domain_name}"
+  statuses    = ["ISSUED"]
+  most_recent = true
+}
+
+data "aws_acm_certificate" "cert_production_domain_name" {
+  domain      = "production.${var.domain_name}"
+  statuses    = ["ISSUED"]
+  most_recent = true
+}
+
 module "network" {
   source       = "../modules/network"
   cidr_vpc     = var.cidr_vpc
@@ -24,12 +42,16 @@ module "network" {
   env          = var.env
 }
 
-module "route53" {
-  source       = "../modules/route53"
-  domain_name  = var.domain_name
-  alb_dns_name = module.alb.alb_dns_name
-  alb_zone_id  = module.alb.alb_zone_id
-}
+//module "route53" {
+//  source       = "../modules/route53"
+//  domain_name  = var.domain_name
+//  alb_dns_name = module.alb.alb_dns_name
+//  alb_zone_id  = module.alb.alb_zone_id
+//  cloudfront_app_dns_name = module.cloudfront_app.cloudfront_dns_name
+//  cloudfront_production_dns_name = module.cloudfront_production.cloudfront_dns_name
+//  cloudfront_app_zone_id  = module.cloudfront_app.cloudfront_zone_id
+//  cloudfront_production_zone_id  = module.cloudfront_production.cloudfront_zone_id
+//}
 
 module "ec2" {
   source = "../modules/ec2"
@@ -53,6 +75,7 @@ module "alb" {
   instance_ids       = module.ec2.instance_ids
   security_group_ids = [module.security_group.alb_from_443_to_80_security_group_id, module.security_group.alb_from_80_to_443_redirect_security_group_id]
   domain_name        = var.domain_name
+  acm_certificate_arn = data.aws_acm_certificate.cert_domain_name.arn
 }
 
 module "nat_gateway" {
@@ -83,28 +106,32 @@ module "rds" {
 }
 
 
-module "s3_first" {
+module "s3_app" {
   source      = "../modules/s3"
-  bucket_name = "first-${var.bucket_name}"
-  cloudfront_origin_access_identity_arn = module.cloudfront_first.cloudfront_oai_iam_arn
+  bucket_name = "app-${var.bucket_name}"
+  cloudfront_origin_access_identity_arn = module.cloudfront_app.cloudfront_oai_iam_arn
 }
 
-module "cloudfront_first" {
+module "cloudfront_app" {
   source        = "../modules/cloudfront"
-  bucket_name   = module.s3_first.bucket_name
-  bucket_region = module.s3_first.bucket_region
+  bucket_name   = module.s3_app.bucket_name
+  bucket_region = module.s3_app.bucket_region
+  aliase        = "app.${var.domain_name}"
+  acm_certificate_arn = data.aws_acm_certificate.cert_app_domain_name.arn
 }
 
-module "s3_second" {
+module "s3_production" {
   source      = "../modules/s3"
-  bucket_name = "second-${var.bucket_name}"
-  cloudfront_origin_access_identity_arn = module.cloudfront_second.cloudfront_oai_iam_arn
+  bucket_name = "production-${var.bucket_name}"
+  cloudfront_origin_access_identity_arn = module.cloudfront_production.cloudfront_oai_iam_arn
 }
 
-module "cloudfront_second" {
+module "cloudfront_production" {
   source        = "../modules/cloudfront"
-  bucket_name   = module.s3_second.bucket_name
-  bucket_region = module.s3_second.bucket_region
+  bucket_name   = module.s3_production.bucket_name
+  bucket_region = module.s3_production.bucket_region
+  aliase        = "production.${var.domain_name}"
+  acm_certificate_arn = data.aws_acm_certificate.cert_production_domain_name.arn
 }
 
 module "security_group" {

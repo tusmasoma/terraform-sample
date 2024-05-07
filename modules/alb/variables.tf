@@ -33,3 +33,8 @@ variable "domain_name" {
   type        = string
   default     = "example.com"
 }
+
+variable "acm_certificate_arn" {
+  type        = string
+  description = "The ARN of the SSL/TLS certificate issued for the domain."
+}

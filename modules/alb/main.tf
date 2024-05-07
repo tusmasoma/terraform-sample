@@ -1,8 +1,8 @@
-data "aws_acm_certificate" "existing_cert" {
-  domain      = var.domain_name
-  statuses    = ["ISSUED"]
-  most_recent = true
-}
+//data "aws_acm_certificate" "existing_cert" {
+//  domain      = var.domain_name
+//  statuses    = ["ISSUED"]
+//  most_recent = true
+//}
 
 resource "aws_lb" "alb" {
   name               = "${var.env}-${var.system}-alb"
@@ -59,7 +59,8 @@ resource "aws_lb_listener" "listener443" {
     target_group_arn = aws_lb_target_group.tg.arn
   }
 
-  certificate_arn = data.aws_acm_certificate.existing_cert.arn
+  //certificate_arn = data.aws_acm_certificate.existing_cert.arn
+  certificate_arn = var.acm_certificate_arn
 }
 
 resource "aws_lb_listener" "listener80" {

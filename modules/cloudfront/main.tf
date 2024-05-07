@@ -9,6 +9,8 @@ resource "aws_cloudfront_distribution" "static-www" {
 
   enabled = true
 
+  aliases = [var.aliase]
+
   default_root_object = "index.html"
 
   default_cache_behavior {
@@ -36,9 +38,19 @@ resource "aws_cloudfront_distribution" "static-www" {
       locations        = ["JP"]
     }
   }
+
   viewer_certificate {
-    cloudfront_default_certificate = true
+    acm_certificate_arn            = var.acm_certificate_arn
+    ssl_support_method             = "sni-only"
+    minimum_protocol_version       = "TLSv1.2_2018"
   }
 }
 
-resource "aws_cloudfront_origin_access_identity" "static-www" {}
+resource "aws_cloudfront_origin_access_identity" "static-www" {
+  comment = "OAI for ${var.bucket_name}"
+}
+
+resource "aws_acm_certificate" "subdomain_cert" {
+  domain_name       = var.aliase
+  validation_method = "DNS"
+}

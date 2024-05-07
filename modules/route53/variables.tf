@@ -13,3 +13,23 @@ variable "alb_zone_id" {
   description = "The Route 53 zone ID for the ALB"
   type        = string
 }
+
+variable "cloudfront_app_dns_name" {
+  description = "The DNS name of the CloudFront distribution to be used in A records."
+  type        = string
+}
+
+variable "cloudfront_production_dns_name" {
+  description = "The DNS name of the CloudFront distribution to be used in A records."
+  type        = string
+}
+
+variable "cloudfront_app_zone_id" {
+  description = "The Route 53 zone ID for the CloudFront distribution"
+  type        = string
+}
+
+variable "cloudfront_production_zone_id" {
+  description = "The Route 53 zone ID for the CloudFront distribution"
+  type        = string
+}
