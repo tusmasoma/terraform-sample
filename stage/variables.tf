@@ -46,25 +46,25 @@ variable "domain_name" {
   default     = "example.com"
 }
 
-variable "instance_count" {
+variable "ec2_instance_count" {
   description = "The number of instances to deploy"
   type        = number
   default     = 1
 }
 
-variable "instance_type" {
+variable "ec2_instance_type" {
   description = "The instance type"
   type        = string
   default     = "t2.micro"
 }
 
-variable "ami" {
+variable "ec2_ami" {
   description = "The AMI to use for the instance"
   type        = string
   default     = "ami-0c55b159cbfafe1f0"
 }
 
-variable "disable_api_termination" {
+variable "ec2_disable_api_termination" {
   description = "If true, enables EC2 Instance Termination Protection"
   type        = bool
   default     = false
@@ -126,7 +126,7 @@ variable "rds_instance_count" {
   type        = number
 }
 
-variable "bucket_name" {
+variable "s3_bucket_name" {
   description = "The name of the S3 bucket."
   type        = string
 }

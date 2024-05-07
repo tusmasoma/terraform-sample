@@ -17,13 +17,13 @@ cidr_private = [
 
 domain_name = "medilab-mamoru-kun-test.com"
 
-instance_count = 1
+ec2_instance_count = 1
 
-instance_type = "t2.micro"
+ec2_instance_type = "t2.micro"
 
-ami = "ami-0c1de55b79f5aff9b"
+ec2_ami = "ami-0c1de55b79f5aff9b"
 
-disable_api_termination = false
+ec2_disable_api_termination = false
 
 name = "mamorukun"
 
@@ -41,4 +41,4 @@ rds_maintenance_window      = "sun:04:00-sun:05:00"
 rds_parameter_family        = "aurora-mysql5.7"
 rds_instance_count          = 1
 
-bucket_name   = "medilab-mamoru-kun-test"
+s3_bucket_name   = "medilab-mamoru-kun-test"

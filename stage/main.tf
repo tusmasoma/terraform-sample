@@ -58,10 +58,10 @@ module "ec2" {
   system = var.system
   env    = var.env
 
-  instance_count          = var.instance_count
-  instance_type           = var.instance_type
-  ami                     = var.ami
-  disable_api_termination = var.disable_api_termination
+  instance_count          = var.ec2
+  instance_type           = var.ec2_instance_type
+  ami                     = var.ec2_ami
+  disable_api_termination = var.ec2_disable_api_termination
   subnets                 = module.network.private_subnet_ids
   security_group_ids      = [module.security_group.ec2_web_to_db_security_group_id]
 }
@@ -105,10 +105,9 @@ module "rds" {
   instance_count          = var.rds_instance_count # クラスターインスタンスの数
 }
 
-
 module "s3_app" {
   source      = "../modules/s3"
-  bucket_name = "app-${var.bucket_name}"
+  bucket_name = "app-${var.s3_bucket_name}"
   cloudfront_origin_access_identity_arn = module.cloudfront_app.cloudfront_oai_iam_arn
 }
 
@@ -122,7 +121,7 @@ module "cloudfront_app" {
 
 module "s3_production" {
   source      = "../modules/s3"
-  bucket_name = "production-${var.bucket_name}"
+  bucket_name = "production-${var.s3_bucket_name}"
   cloudfront_origin_access_identity_arn = module.cloudfront_production.cloudfront_oai_iam_arn
 }
 
