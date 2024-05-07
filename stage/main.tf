@@ -58,7 +58,7 @@ module "ec2" {
   system = var.system
   env    = var.env
 
-  instance_count          = var.ec2
+  instance_count          = var.ec2_instance_count
   instance_type           = var.ec2_instance_type
   ami                     = var.ec2_ami
   disable_api_termination = var.ec2_disable_api_termination
