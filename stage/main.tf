@@ -14,6 +14,12 @@ provider "aws" {
   region  = "ap-northeast-1"
 }
 
+provider "aws" {
+  alias   = "us_east_1"
+  profile = "default"
+  region  = "us-east-1"
+}
+
 data "aws_acm_certificate" "cert_domain_name" {
   domain      = var.domain_name
   statuses    = ["ISSUED"]
@@ -21,12 +27,14 @@ data "aws_acm_certificate" "cert_domain_name" {
 }
 
 data "aws_acm_certificate" "cert_app_domain_name" {
+  provider    = aws.us_east_1
   domain      = "app.${var.domain_name}"
   statuses    = ["ISSUED"]
   most_recent = true
 }
 
 data "aws_acm_certificate" "cert_production_domain_name" {
+  provider    = aws.us_east_1
   domain      = "production.${var.domain_name}"
   statuses    = ["ISSUED"]
   most_recent = true
