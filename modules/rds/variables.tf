@@ -1,5 +1,5 @@
 variable "env" {
-  description = "The environment (e.g., prod, dev, staging)"
+  description = "Environment (e.g., prod, dev, staging)"
 }
 
 variable "system" {
@@ -7,75 +7,62 @@ variable "system" {
 }
 
 variable "subnets" {
-  description = "List of subnet IDs for the DB Subnet Group"
+  description = "List of subnet IDs for the DB subnet group"
   type        = list(string)
-}
-
-variable "allocated_storage" {
-  description = "The allocated storage size for the RDS instance (in gigabytes)"
-}
-
-variable "storage_type" {
-  description = "The type of storage (e.g., gp2, io1)"
 }
 
 variable "engine" {
-  description = "The database engine to use (e.g., mysql, postgresql)"
+  description = "Database engine type (e.g., aurora, aurora-mysql, aurora-postgresql)"
 }
 
 variable "engine_version" {
-  description = "The version of the database engine"
-}
-
-variable "instance_class" {
-  description = "The instance type of the RDS instance (e.g., db.m4.large)"
+  description = "Version of the database engine"
 }
 
 variable "db_name" {
-  description = "The name of the database to create when the DB instance is created"
+  description = "Database name"
 }
 
 variable "username" {
-  description = "Username for the database administrator"
+  description = "Master username for the database"
 }
 
 variable "password" {
-  description = "Password for the database administrator"
+  description = "Master password for the database"
+}
+
+variable "instance_class" {
+  description = "Instance class for the RDS cluster instances"
+}
+
+variable "instance_count" {
+  description = "Number of instances in the RDS cluster"
+  default     = 2
+}
+
+variable "parameter_family" {
+  description = "Parameter group family"
 }
 
 variable "security_group_ids" {
-  description = "List of VPC security group IDs to associate"
+  description = "List of security group IDs"
   type        = list(string)
 }
 
-variable "multi_az" {
-  description = "Specifies if the RDS instance is multi-AZ"
+variable "backup_retention_period" {
+  description = "Number of days to retain backups"
+}
+
+variable "backup_window" {
+  description = "Preferred backup window"
+}
+
+variable "skip_final_snapshot" {
+  description = "Whether to skip the creation of a final snapshot on deletion"
   default     = false
 }
 
 variable "storage_encrypted" {
-  description = "Specifies whether the DB instance is encrypted"
+  description = "Whether the RDS instance is encrypted"
   default     = false
-}
-
-variable "skip_final_snapshot" {
-  description = "Determines whether a final DB snapshot is created before the DB instance is deleted"
-  default     = true
-}
-
-variable "backup_retention_period" {
-  description = "The number of days to retain backups for"
-  default     = 7
-}
-
-variable "backup_window" {
-  description = "The daily time range during which automated backups are created"
-}
-
-variable "maintenance_window" {
-  description = "The weekly time range during which system maintenance can occur"
-}
-
-variable "parameter_family" {
-  description = "The family of the DB parameter group"
 }

@@ -70,14 +70,6 @@ variable "disable_api_termination" {
   default     = false
 }
 
-variable "rds_allocated_storage" {
-  description = "The allocated storage size for the RDS instance (in gigabytes)"
-}
-
-variable "rds_storage_type" {
-  description = "The type of storage for the RDS instance (e.g., gp2, io1)"
-}
-
 variable "rds_engine" {
   description = "The database engine to use for the RDS instance (e.g., mysql, postgresql)"
 }
@@ -100,11 +92,6 @@ variable "rds_username" {
 
 variable "rds_password" {
   description = "Password for the RDS database administrator"
-}
-
-variable "rds_multi_az" {
-  description = "Specifies if the RDS instance is multi-AZ"
-  default     = false
 }
 
 variable "rds_storage_encrypted" {
@@ -132,6 +119,11 @@ variable "rds_maintenance_window" {
 
 variable "rds_parameter_family" {
   description = "The family of the DB parameter group for the RDS instance"
+}
+
+variable "rds_instance_count" {
+  description = "Number of instances in the RDS cluster"
+  type        = number
 }
 
 variable "bucket_name" {

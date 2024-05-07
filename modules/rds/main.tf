@@ -9,35 +9,46 @@ resource "aws_db_subnet_group" "rds_subnet_group" {
   }
 }
 
-resource "aws_db_instance" "rds" {
-  identifier             = "${var.env}-${var.system}-rds"
-  allocated_storage      = var.allocated_storage
-  storage_type           = var.storage_type
-  engine                 = var.engine
-  engine_version         = var.engine_version
-  instance_class         = var.instance_class
-  db_name                = var.db_name
-  username               = var.username
-  password               = var.password
-  parameter_group_name   = aws_db_parameter_group.rds_param_group.name
-  db_subnet_group_name   = aws_db_subnet_group.rds_subnet_group.name
-  vpc_security_group_ids = var.security_group_ids
-  multi_az               = var.multi_az
-  storage_encrypted      = var.storage_encrypted
-  skip_final_snapshot    = var.skip_final_snapshot
+resource "aws_rds_cluster" "aurora_cluster" {
+  cluster_identifier      = "${var.env}-${var.system}-aurora-cluster"
+  engine                  = var.engine
+  engine_version          = var.engine_version
+  database_name           = var.db_name
+  master_username         = var.username
+  master_password         = var.password
+  db_subnet_group_name    = aws_db_subnet_group.rds_subnet_group.name
+
+  vpc_security_group_ids  = var.security_group_ids
+  db_cluster_parameter_group_name = aws_rds_cluster_parameter_group.aurora_cluster_param_group.name
 
   backup_retention_period = var.backup_retention_period
-  backup_window           = var.backup_window
-  maintenance_window      = var.maintenance_window
+  preferred_backup_window = var.backup_window
+  skip_final_snapshot     = var.skip_final_snapshot
+  storage_encrypted       = var.storage_encrypted
 
   tags = {
-    "Name"        = "${var.env}-${var.system}-rds"
+    "Name"        = "${var.env}-${var.system}-aurora-cluster"
     "Environment" = var.env
   }
 }
 
-resource "aws_db_parameter_group" "rds_param_group" {
-  name   = "${var.env}-${var.system}-db-param-group"
+resource "aws_rds_cluster_instance" "aurora_instances" {
+  count               = var.instance_count
+  identifier          = "${var.env}-${var.system}-aurora-instance-${count.index}"
+  cluster_identifier  = aws_rds_cluster.aurora_cluster.id
+  instance_class      = var.instance_class
+  engine              = var.engine
+  engine_version      = var.engine_version
+  db_subnet_group_name = aws_db_subnet_group.rds_subnet_group.name
+
+  tags = {
+    "Name"        = "${var.env}-${var.system}-aurora-instance-${count.index}"
+    "Environment" = var.env
+  }
+}
+
+resource "aws_rds_cluster_parameter_group" "aurora_cluster_param_group" {
+  name   = "${var.env}-${var.system}-aurora-cluster-param-group"
   family = var.parameter_family
 
   parameter {
@@ -46,7 +57,7 @@ resource "aws_db_parameter_group" "rds_param_group" {
   }
 
   tags = {
-    "Name"        = "${var.env}-${var.system}-db-param-group"
+    "Name"        = "${var.env}-${var.system}-aurora-cluster-param-group"
     "Environment" = var.env
   }
 }

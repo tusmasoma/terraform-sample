@@ -67,8 +67,6 @@ module "rds" {
   system                  = var.system
   env                     = var.env
   subnets                 = module.network.private_subnet_ids
-  allocated_storage       = var.rds_allocated_storage
-  storage_type            = var.rds_storage_type
   engine                  = var.rds_engine
   engine_version          = var.rds_engine_version
   instance_class          = var.rds_instance_class
@@ -76,14 +74,14 @@ module "rds" {
   username                = var.rds_username
   password                = var.rds_password
   security_group_ids      = [module.security_group.rds_security_group_id]
-  multi_az                = var.rds_multi_az
   storage_encrypted       = var.rds_storage_encrypted
   skip_final_snapshot     = var.rds_skip_final_snapshot
   backup_retention_period = var.rds_backup_retention_period
   backup_window           = var.rds_backup_window
-  maintenance_window      = var.rds_maintenance_window
   parameter_family        = var.rds_parameter_family
+  instance_count          = var.rds_instance_count # クラスターインスタンスの数
 }
+
 
 module "s3_first" {
   source      = "../modules/s3"
