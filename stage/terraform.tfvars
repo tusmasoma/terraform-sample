@@ -42,3 +42,5 @@ rds_backup_retention_period = 7
 rds_backup_window           = "03:00-04:00"
 rds_maintenance_window      = "sun:04:00-sun:05:00"
 rds_parameter_family        = "mysql5.7"
+
+bucket_name   = "medilab-mamoru-kun-test"

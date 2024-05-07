@@ -85,6 +85,29 @@ module "rds" {
   parameter_family        = var.rds_parameter_family
 }
 
+module "s3_first" {
+  source      = "../modules/s3"
+  bucket_name = "first-${var.bucket_name}"
+  cloudfront_origin_access_identity_arn = module.cloudfront_first.cloudfront_oai_iam_arn
+}
+
+module "cloudfront_first" {
+  source        = "../modules/cloudfront"
+  bucket_name   = module.s3_first.bucket_name
+  bucket_region = module.s3_first.bucket_region
+}
+
+module "s3_second" {
+  source      = "../modules/s3"
+  bucket_name = "second-${var.bucket_name}"
+  cloudfront_origin_access_identity_arn = module.cloudfront_second.cloudfront_oai_iam_arn
+}
+
+module "cloudfront_second" {
+  source        = "../modules/cloudfront"
+  bucket_name   = module.s3_second.bucket_name
+  bucket_region = module.s3_second.bucket_region
+}
 
 module "security_group" {
   source = "../modules/security_group"

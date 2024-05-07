@@ -133,3 +133,8 @@ variable "rds_maintenance_window" {
 variable "rds_parameter_family" {
   description = "The family of the DB parameter group for the RDS instance"
 }
+
+variable "bucket_name" {
+  description = "The name of the S3 bucket."
+  type        = string
+}
