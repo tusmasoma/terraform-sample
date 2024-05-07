@@ -2,6 +2,8 @@
 
 このディレクトリは、Terraformを使用したステージング環境のインフラストラクチャを管理するためのものです。ここには、Terraformの構成ファイル群が含まれており、ステージング環境の設定とデプロイメントを効率的に行うことができます。
 
+<br>
+
 ![terraform drawio](https://github.com/tusmasoma/terraform-sample/assets/104899572/a8146f6c-da29-4d8b-bc30-652965656abb)
 
 
