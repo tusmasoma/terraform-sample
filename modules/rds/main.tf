@@ -61,3 +61,41 @@ resource "aws_rds_cluster_parameter_group" "aurora_cluster_param_group" {
     "Environment" = var.env
   }
 }
+
+resource "aws_cloudwatch_metric_alarm" "cpu_alarm" {
+  count               = var.instance_count
+  alarm_name          = "${var.env}-${var.system}-aurora-instance-${count.index}-cpu-alarm"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods  = 2
+  metric_name         = "CPUUtilization"
+  namespace           = "AWS/RDS"
+  period              = 300
+  statistic           = "Average"
+  threshold           = 90
+  alarm_description   = "This metric monitors RDS CPU utilization"
+  alarm_actions       = [aws_sns_topic.alarm.arn]
+  ok_actions          = [aws_sns_topic.ok.arn]
+
+  dimensions = {
+    DBInstanceIdentifier = aws_rds_cluster_instance.aurora_instances[count.index].id
+  }
+}
+
+resource "aws_cloudwatch_metric_alarm" "rds_high_connection_count" {
+  count               = var.instance_count
+  alarm_name          = "${var.env}-${var.system}-aurora-instance-${count.index}-connection-count-alarm"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods  = 2
+  metric_name         = "DatabaseConnections"
+  namespace           = "AWS/RDS"
+  period              = 300
+  statistic           = "Average"
+  threshold           = 100
+  alarm_description   = "This metric monitors RDS connection count"
+  alarm_actions       = [aws_sns_topic.alarm.arn]
+  ok_actions          = [aws_sns_topic.ok.arn]
+
+  dimensions = {
+    DBInstanceIdentifier = aws_rds_cluster_instance.aurora_instances[count.index].id
+  }
+}
