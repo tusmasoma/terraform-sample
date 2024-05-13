@@ -15,3 +15,103 @@ resource "aws_instance" "ec2" {
     create_before_destroy = true
   }
 }
+
+resource "aws_cloudwatch_metric_alarm" "cpu_alarm" {
+  count               = var.instance_count
+  alarm_name          = "${var.system}-${var.env}-ec2-${count.index + 1}-cpu-alarm"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods  = 2
+  metric_name         = "CPUUtilization"
+  namespace           = "AWS/EC2"
+  period              = 300
+  statistic           = "Average"
+  threshold           = 90
+  alarm_description   = "This metric monitors ec2 CPU utilization"
+  alarm_actions       = [] # TODO: Enable this when you have a valid SNS topic
+  ok_actions          = [] # TODO: Enable this when you have a valid SNS topic
+  actions_enabled      = false # TODO: Enable this when you have a valid SNS topic
+
+  dimensions = {
+    InstanceId = aws_instance.ec2[count.index].id
+  }
+}
+
+resource "aws_cloudwatch_metric_alarm" "status_check_alarm" {
+  count               = var.instance_count
+  alarm_name          = "${var.system}-${var.env}-ec2-${count.index + 1}-status-check-alarm"
+  comparison_operator = "LessThanThreshold"
+  evaluation_periods  = 2
+  metric_name         = "StatusCheckFailed"
+  namespace           = "AWS/EC2"
+  period              = 300
+  statistic           = "Average"
+  threshold           = 1
+  alarm_description   = "This metric monitors ec2 status check"
+  alarm_actions       = [] # TODO: Enable this when you have a valid SNS topic
+  ok_actions          = [] # TODO: Enable this when you have a valid SNS topic
+  actions_enabled      = false # TODO: Enable this when you have a valid SNS topic
+
+  dimensions = {
+    InstanceId = aws_instance.ec2[count.index].id
+  }
+}
+
+resource "aws_cloudwatch_metric_alarm" "disk_alarm" {
+  count               = var.instance_count
+  alarm_name          = "${var.system}-${var.env}-ec2-${count.index + 1}-disk-alarm"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods  = 2
+  metric_name         = "DiskSpaceUtilization"
+  namespace           = "System/Linux"
+  period              = 300
+  statistic           = "Average"
+  threshold           = 90
+  alarm_description   = "This metric monitors ec2 disk space utilization"
+  alarm_actions       = [] # TODO: Enable this when you have a valid SNS topic
+  ok_actions          = [] # TODO: Enable this when you have a valid SNS topic
+  actions_enabled      = false # TODO: Enable this when you have a valid SNS topic
+
+  dimensions = {
+    InstanceId = aws_instance.ec2[count.index].id
+  }
+}
+
+resource "aws_cloudwatch_metric_alarm" "memory_alarm" {
+  count               = var.instance_count
+  alarm_name          = "${var.system}-${var.env}-ec2-${count.index + 1}-memory-alarm"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods  = 2
+  metric_name         = "MemoryUtilization"
+  namespace           = "System/Linux"
+  period              = 300
+  statistic           = "Average"
+  threshold           = 90
+  alarm_description   = "This metric monitors ec2 memory utilization"
+  alarm_actions       = [] # TODO: Enable this when you have a valid SNS topic
+  ok_actions          = [] # TODO: Enable this when you have a valid SNS topic
+  actions_enabled      = false # TODO: Enable this when you have a valid SNS topic
+
+  dimensions = {
+    InstanceId = aws_instance.ec2[count.index].id
+  }
+}
+
+resource "aws_cloudwatch_metric_alarm" "network_alarm" {
+  count               = var.instance_count
+  alarm_name          = "${var.system}-${var.env}-ec2-${count.index + 1}-network-alarm"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods  = 2
+  metric_name         = "NetworkIn"
+  namespace           = "AWS/EC2"
+  period              = 300
+  statistic           = "Average"
+  threshold           = 1000000
+  alarm_description   = "This metric monitors ec2 network in"
+  alarm_actions       = [] # TODO: Enable this when you have a valid SNS topic
+  ok_actions          = [] # TODO: Enable this when you have a valid SNS topic
+  actions_enabled      = false # TODO: Enable this when you have a valid SNS topic
+
+  dimensions = {
+    InstanceId = aws_instance.ec2[count.index].id
+  }
+}

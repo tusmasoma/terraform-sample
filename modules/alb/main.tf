@@ -85,3 +85,41 @@ resource "aws_lb_target_group_attachment" "tg_attachment" {
   target_id        = element(var.instance_ids, count.index)
   port             = 80
 }
+
+resource "aws_cloudwatch_metric_alarm" "http_4xx" {
+  alarm_name          = "${var.env}-${var.system}-http-4xx-alarm"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods  = 2
+  metric_name         = "HTTPCode_Target_4XX_Count"
+  namespace           = "AWS/ApplicationELB"
+  period              = 60
+  statistic           = "Sum"
+  threshold           = 1
+  alarm_description   = "This metric monitors http 4xx errors"
+  alarm_actions       = [] # TODO: Enable this when you have a valid SNS topic
+  ok_actions          = [] # TODO: Enable this when you have a valid SNS topic
+  actions_enabled     =false # TODO: Enable this when you have a valid SNS topic
+
+  dimensions = {
+    LoadBalancer = aws_lb.alb.arn
+  }
+}
+
+resource "aws_cloudwatch_metric_alarm" "http_5xx" {
+  alarm_name          = "${var.env}-${var.system}-http-5xx-alarm"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods  = 2
+  metric_name         = "HTTPCode_Target_5XX_Count"
+  namespace           = "AWS/ApplicationELB"
+  period              = 60
+  statistic           = "Sum"
+  threshold           = 1
+  alarm_description   = "This metric monitors http 5xx errors"
+  alarm_actions       = [] # TODO: Enable this when you have a valid SNS topic
+  ok_actions          = [] # TODO: Enable this when you have a valid SNS topic
+  actions_enabled     = false # TODO: Enable this when you have a valid SNS topic
+
+  dimensions = {
+    LoadBalancer = aws_lb.alb.arn
+  }
+}
