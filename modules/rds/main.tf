@@ -73,8 +73,9 @@ resource "aws_cloudwatch_metric_alarm" "cpu_alarm" {
   statistic           = "Average"
   threshold           = 90
   alarm_description   = "This metric monitors RDS CPU utilization"
-  alarm_actions       = [aws_sns_topic.alarm.arn]
-  ok_actions          = [aws_sns_topic.ok.arn]
+  alarm_actions       = [] # TODO: Enable this when you have a valid SNS topic
+  ok_actions          = [] # TODO: Enable this when you have a valid SNS topic
+  actions_enabled      = false # TODO: Enable this when you have a valid SNS topic
 
   dimensions = {
     DBInstanceIdentifier = aws_rds_cluster_instance.aurora_instances[count.index].id
@@ -92,8 +93,9 @@ resource "aws_cloudwatch_metric_alarm" "rds_high_connection_count" {
   statistic           = "Average"
   threshold           = 100
   alarm_description   = "This metric monitors RDS connection count"
-  alarm_actions       = [aws_sns_topic.alarm.arn]
-  ok_actions          = [aws_sns_topic.ok.arn]
+  alarm_actions       = [] # TODO: Enable this when you have a valid SNS topic
+  ok_actions          = [] # TODO: Enable this when you have a valid SNS topic
+  actions_enabled      = false # TODO: Enable this when you have a valid SNS topic
 
   dimensions = {
     DBInstanceIdentifier = aws_rds_cluster_instance.aurora_instances[count.index].id

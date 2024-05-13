@@ -27,8 +27,9 @@ resource "aws_cloudwatch_metric_alarm" "cpu_alarm" {
   statistic           = "Average"
   threshold           = 90
   alarm_description   = "This metric monitors ec2 CPU utilization"
-  alarm_actions       = [aws_sns_topic.alarm.arn]
-  ok_actions          = [aws_sns_topic.ok.arn]
+  alarm_actions       = [] # TODO: Enable this when you have a valid SNS topic
+  ok_actions          = [] # TODO: Enable this when you have a valid SNS topic
+  actions_enabled      = false # TODO: Enable this when you have a valid SNS topic
 
   dimensions = {
     InstanceId = aws_instance.ec2[count.index].id
@@ -46,8 +47,9 @@ resource "aws_cloudwatch_metric_alarm" "status_check_alarm" {
   statistic           = "Average"
   threshold           = 1
   alarm_description   = "This metric monitors ec2 status check"
-  alarm_actions       = [aws_sns_topic.alarm.arn]
-  ok_actions          = [aws_sns_topic.ok.arn]
+  alarm_actions       = [] # TODO: Enable this when you have a valid SNS topic
+  ok_actions          = [] # TODO: Enable this when you have a valid SNS topic
+  actions_enabled      = false # TODO: Enable this when you have a valid SNS topic
 
   dimensions = {
     InstanceId = aws_instance.ec2[count.index].id
@@ -65,8 +67,9 @@ resource "aws_cloudwatch_metric_alarm" "disk_alarm" {
   statistic           = "Average"
   threshold           = 90
   alarm_description   = "This metric monitors ec2 disk space utilization"
-  alarm_actions       = [aws_sns_topic.alarm.arn]
-  ok_actions          = [aws_sns_topic.ok.arn]
+  alarm_actions       = [] # TODO: Enable this when you have a valid SNS topic
+  ok_actions          = [] # TODO: Enable this when you have a valid SNS topic
+  actions_enabled      = false # TODO: Enable this when you have a valid SNS topic
 
   dimensions = {
     InstanceId = aws_instance.ec2[count.index].id
@@ -84,8 +87,9 @@ resource "aws_cloudwatch_metric_alarm" "memory_alarm" {
   statistic           = "Average"
   threshold           = 90
   alarm_description   = "This metric monitors ec2 memory utilization"
-  alarm_actions       = [aws_sns_topic.alarm.arn]
-  ok_actions          = [aws_sns_topic.ok.arn]
+  alarm_actions       = [] # TODO: Enable this when you have a valid SNS topic
+  ok_actions          = [] # TODO: Enable this when you have a valid SNS topic
+  actions_enabled      = false # TODO: Enable this when you have a valid SNS topic
 
   dimensions = {
     InstanceId = aws_instance.ec2[count.index].id
@@ -103,8 +107,9 @@ resource "aws_cloudwatch_metric_alarm" "network_alarm" {
   statistic           = "Average"
   threshold           = 1000000
   alarm_description   = "This metric monitors ec2 network in"
-  alarm_actions       = [aws_sns_topic.alarm.arn]
-  ok_actions          = [aws_sns_topic.ok.arn]
+  alarm_actions       = [] # TODO: Enable this when you have a valid SNS topic
+  ok_actions          = [] # TODO: Enable this when you have a valid SNS topic
+  actions_enabled      = false # TODO: Enable this when you have a valid SNS topic
 
   dimensions = {
     InstanceId = aws_instance.ec2[count.index].id
