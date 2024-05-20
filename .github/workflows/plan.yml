@@ -9,6 +9,9 @@ jobs:
   plan:
     name: Plan
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        dir: [ stage ]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -31,16 +34,14 @@ jobs:
 
       - name: Setup terraform
         if: steps.diff.outputs.diff
-        uses: hashicorp/setup-terraform@v1.2.1
+        uses: hashicorp/setup-terraform@v1.5.7
         with:
-          terraform_version: 0.13.2
+          terraform_version: 1.5.7
 
       - name: Check format
         id: fmt
         if: steps.diff.outputs.diff
         run: terraform fmt -check -recursive
-        working-directory: ${{ matrix.dir }}
-        continue-on-error: true
 
       - name: Initialize
         id: init
@@ -51,12 +52,12 @@ jobs:
       - name: Download modules
         if: steps.diff.outputs.diff
         run: terraform get
-        working-directory: ${{ matrix.dir }}
+        working-directory: .
 
       - name: Validate
         if: steps.diff.outputs.diff
         run: terraform validate -no-color
-        working-directory: ${{ matrix.dir }}
+        working-directory: .
 
       - name: Plan
         if: steps.diff.outputs.diff
@@ -69,7 +70,7 @@ jobs:
         if: steps.diff.outputs.diff
         uses: actions/github-script@v3.0.0
         env:
-          PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
+          PLAN: ${{ steps.plan.outputs.stdout }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
