@@ -15,7 +15,7 @@ cidr_private = [
   "10.1.103.0/24"
 ]
 
-domain_name = "example.com"
+domain_name = "terraform-sample.com"
 
 ec2_instance_count = 1
 
