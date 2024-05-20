@@ -14,7 +14,7 @@ resource "aws_cloudfront_distribution" "static-www" {
   default_root_object = "index.html"
 
   default_cache_behavior {
-    allowed_methods  = ["GET", "HEAD"]
+    allowed_methods  = ["GET", "HEAD", "PUT", "POST", "PATCH", "DELETE", "OPTIONS"]
     cached_methods   = ["GET", "HEAD"]
     target_origin_id = var.bucket_name
 

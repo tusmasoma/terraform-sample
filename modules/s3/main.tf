@@ -32,7 +32,8 @@ data "aws_iam_policy_document" "static-www" {
       identifiers = [var.cloudfront_origin_access_identity_arn]
     }
     actions = [
-      "s3:GetObject"
+      "s3:GetObject",
+      "s3:PutObject"
     ]
 
     resources = [
