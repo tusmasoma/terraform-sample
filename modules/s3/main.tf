@@ -23,22 +23,42 @@ resource "aws_s3_bucket_policy" "bucket" {
   policy = data.aws_iam_policy_document.static-www.json
 }
 
+#data "aws_iam_policy_document" "static-www" {
+#  statement {
+#    sid    = "Allow CloudFront"
+#    effect = "Allow"
+#    principals {
+#      type        = "AWS"
+#      identifiers = [var.cloudfront_origin_access_identity_arn]
+#    }
+#    actions = [
+#      "s3:GetObject",
+#      "s3:PutObject"
+#    ]
+#
+#    resources = [
+#      "${aws_s3_bucket.bucket.arn}/*"
+#    ]
+#  }
+#}
+
 data "aws_iam_policy_document" "static-www" {
+  # CloudFront Distribution からのアクセスのみ許可
   statement {
-    sid    = "Allow CloudFront"
-    effect = "Allow"
     principals {
-      type        = "AWS"
-      identifiers = [var.cloudfront_origin_access_identity_arn]
+      type        = "Service"
+      identifiers = ["cloudfront.amazonaws.com"]
     }
     actions = [
       "s3:GetObject",
       "s3:PutObject"
     ]
-
-    resources = [
-      "${aws_s3_bucket.bucket.arn}/*"
-    ]
+    resources = ["${aws_s3_bucket.bucket.arn}/*"]
+    condition {
+      test     = "StringEquals"
+      variable = "aws:SourceArn"
+      values   = [var.cloudfront_distribution_arn]
+    }
   }
 }
 
@@ -52,8 +72,8 @@ resource "aws_cloudwatch_metric_alarm" "s3_bucket_size" {
   statistic           = "Average"
   threshold           = 1000000
   alarm_description   = "This metric monitors S3 bucket size"
-  alarm_actions       = [] # TODO: Enable this when you have a valid SNS topic
-   ok_actions          = [] # TODO: Enable this when you have a valid SNS topic
+  alarm_actions       = []    # TODO: Enable this when you have a valid SNS topic
+  ok_actions          = []    # TODO: Enable this when you have a valid SNS topic
   actions_enabled     = false # TODO: Enable this when you have a valid SNS topic
 
   dimensions = {
@@ -71,8 +91,8 @@ resource "aws_cloudwatch_metric_alarm" "s3_bucket_objects" {
   statistic           = "Average"
   threshold           = 1000
   alarm_description   = "This metric monitors S3 bucket objects"
-  alarm_actions       = [] # TODO: Enable this when you have a valid SNS topic
-  ok_actions          = [] # TODO: Enable this when you have a valid SNS topic
+  alarm_actions       = []    # TODO: Enable this when you have a valid SNS topic
+  ok_actions          = []    # TODO: Enable this when you have a valid SNS topic
   actions_enabled     = false # TODO: Enable this when you have a valid SNS topic
 
   dimensions = {
@@ -90,8 +110,8 @@ resource "aws_cloudwatch_metric_alarm" "s3_bucket_requests" {
   statistic           = "Sum"
   threshold           = 1000
   alarm_description   = "This metric monitors S3 bucket requests"
-  alarm_actions       = [] # TODO: Enable this when you have a valid SNS topic
-  ok_actions          = [] # TODO: Enable this when you have a valid SNS topic
+  alarm_actions       = []    # TODO: Enable this when you have a valid SNS topic
+  ok_actions          = []    # TODO: Enable this when you have a valid SNS topic
   actions_enabled     = false # TODO: Enable this when you have a valid SNS topic
 
   dimensions = {
@@ -109,8 +129,8 @@ resource "aws_cloudwatch_metric_alarm" "s3_bucket_4xx_errors" {
   statistic           = "Sum"
   threshold           = 1
   alarm_description   = "This metric monitors S3 bucket 4xx errors"
-  alarm_actions       = [] # TODO: Enable this when you have a valid SNS topic
-  ok_actions          = [] # TODO: Enable this when you have a valid SNS topic
+  alarm_actions       = []    # TODO: Enable this when you have a valid SNS topic
+  ok_actions          = []    # TODO: Enable this when you have a valid SNS topic
   actions_enabled     = false # TODO: Enable this when you have a valid SNS topic
 
   dimensions = {
@@ -128,8 +148,8 @@ resource "aws_cloudwatch_metric_alarm" "s3_bucket_5xx_errors" {
   statistic           = "Sum"
   threshold           = 1
   alarm_description   = "This metric monitors S3 bucket 5xx errors"
-  alarm_actions       = [] # TODO: Enable this when you have a valid SNS topic
-  ok_actions          = [] # TODO: Enable this when you have a valid SNS topic
+  alarm_actions       = []    # TODO: Enable this when you have a valid SNS topic
+  ok_actions          = []    # TODO: Enable this when you have a valid SNS topic
   actions_enabled     = false # TODO: Enable this when you have a valid SNS topic
 
   dimensions = {
@@ -147,8 +167,8 @@ resource "aws_cloudwatch_metric_alarm" "s3_bucket_data_transfer" {
   statistic           = "Sum"
   threshold           = 1000000
   alarm_description   = "This metric monitors S3 bucket data transfer"
-  alarm_actions       = [] # TODO: Enable this when you have a valid SNS topic
-  ok_actions          = [] # TODO: Enable this when you have a valid SNS topic
+  alarm_actions       = []    # TODO: Enable this when you have a valid SNS topic
+  ok_actions          = []    # TODO: Enable this when you have a valid SNS topic
   actions_enabled     = false # TODO: Enable this when you have a valid SNS topic
 
   dimensions = {
@@ -166,8 +186,8 @@ resource "aws_cloudwatch_metric_alarm" "s3_bucket_latency" {
   statistic           = "Average"
   threshold           = 1000
   alarm_description   = "This metric monitors S3 bucket latency"
-  alarm_actions       = [] # TODO: Enable this when you have a valid SNS topic
-  ok_actions          = [] # TODO: Enable this when you have a valid SNS topic
+  alarm_actions       = []    # TODO: Enable this when you have a valid SNS topic
+  ok_actions          = []    # TODO: Enable this when you have a valid SNS topic
   actions_enabled     = false # TODO: Enable this when you have a valid SNS topic
 
   dimensions = {
@@ -185,8 +205,8 @@ resource "aws_cloudwatch_metric_alarm" "s3_bucket_throttle_errors" {
   statistic           = "Sum"
   threshold           = 1
   alarm_description   = "This metric monitors S3 bucket throttle errors"
-  alarm_actions       = [] # TODO: Enable this when you have a valid SNS topic
-  ok_actions          = [] # TODO: Enable this when you have a valid SNS topic
+  alarm_actions       = []    # TODO: Enable this when you have a valid SNS topic
+  ok_actions          = []    # TODO: Enable this when you have a valid SNS topic
   actions_enabled     = false # TODO: Enable this when you have a valid SNS topic
 
   dimensions = {

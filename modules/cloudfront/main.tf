@@ -1,10 +1,11 @@
 resource "aws_cloudfront_distribution" "static-www" {
   origin {
-    domain_name = "${var.bucket_name}.s3.${var.bucket_region}.amazonaws.com"
-    origin_id   = var.bucket_name
-    s3_origin_config {
-      origin_access_identity = aws_cloudfront_origin_access_identity.static-www.cloudfront_access_identity_path
-    }
+    domain_name              = "${var.bucket_name}.s3.${var.bucket_region}.amazonaws.com"
+    origin_id                = var.bucket_name
+    origin_access_control_id = aws_cloudfront_origin_access_control.static-www.id
+    #s3_origin_config {
+    #  origin_access_identity = aws_cloudfront_origin_access_identity.static-www.cloudfront_access_identity_path
+    #}
   }
 
   enabled = true
@@ -40,14 +41,21 @@ resource "aws_cloudfront_distribution" "static-www" {
   }
 
   viewer_certificate {
-    acm_certificate_arn            = var.acm_certificate_arn
-    ssl_support_method             = "sni-only"
-    minimum_protocol_version       = "TLSv1.2_2018"
+    acm_certificate_arn      = var.acm_certificate_arn
+    ssl_support_method       = "sni-only"
+    minimum_protocol_version = "TLSv1.2_2018"
   }
 }
 
 resource "aws_cloudfront_origin_access_identity" "static-www" {
   comment = "OAI for ${var.bucket_name}"
+}
+
+resource "aws_cloudfront_origin_access_control" "static-www" {
+  name                              = "s3-${var.bucket_name}"
+  origin_access_control_origin_type = "s3"
+  signing_behavior                  = "always"
+  signing_protocol                  = "sigv4"
 }
 
 resource "aws_acm_certificate" "subdomain_cert" {

@@ -96,9 +96,9 @@ resource "aws_cloudwatch_metric_alarm" "http_4xx" {
   statistic           = "Sum"
   threshold           = 1
   alarm_description   = "This metric monitors http 4xx errors"
-  alarm_actions       = [] # TODO: Enable this when you have a valid SNS topic
-  ok_actions          = [] # TODO: Enable this when you have a valid SNS topic
-  actions_enabled     =false # TODO: Enable this when you have a valid SNS topic
+  alarm_actions       = []    # TODO: Enable this when you have a valid SNS topic
+  ok_actions          = []    # TODO: Enable this when you have a valid SNS topic
+  actions_enabled     = false # TODO: Enable this when you have a valid SNS topic
 
   dimensions = {
     LoadBalancer = aws_lb.alb.arn
@@ -115,8 +115,8 @@ resource "aws_cloudwatch_metric_alarm" "http_5xx" {
   statistic           = "Sum"
   threshold           = 1
   alarm_description   = "This metric monitors http 5xx errors"
-  alarm_actions       = [] # TODO: Enable this when you have a valid SNS topic
-  ok_actions          = [] # TODO: Enable this when you have a valid SNS topic
+  alarm_actions       = []    # TODO: Enable this when you have a valid SNS topic
+  ok_actions          = []    # TODO: Enable this when you have a valid SNS topic
   actions_enabled     = false # TODO: Enable this when you have a valid SNS topic
 
   dimensions = {

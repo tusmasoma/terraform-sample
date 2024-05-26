@@ -75,14 +75,14 @@ module "ec2" {
 }
 
 module "alb" {
-  source             = "../modules/alb"
-  system             = var.system
-  env                = var.env
-  vpc_id             = module.network.vpc_id
-  subnets            = module.network.public_subnet_ids
-  instance_ids       = module.ec2.instance_ids
-  security_group_ids = [module.security_group.alb_from_443_to_80_security_group_id, module.security_group.alb_from_80_to_443_redirect_security_group_id]
-  domain_name        = var.domain_name
+  source              = "../modules/alb"
+  system              = var.system
+  env                 = var.env
+  vpc_id              = module.network.vpc_id
+  subnets             = module.network.public_subnet_ids
+  instance_ids        = module.ec2.instance_ids
+  security_group_ids  = [module.security_group.alb_from_443_to_80_security_group_id, module.security_group.alb_from_80_to_443_redirect_security_group_id]
+  domain_name         = var.domain_name
   acm_certificate_arn = data.aws_acm_certificate.cert_domain_name.arn
 }
 
@@ -114,30 +114,30 @@ module "rds" {
 }
 
 module "s3_app" {
-  source      = "../modules/s3"
-  bucket_name = "app-${var.s3_bucket_name}"
+  source                                = "../modules/s3"
+  bucket_name                           = "app-${var.s3_bucket_name}"
   cloudfront_origin_access_identity_arn = module.cloudfront_app.cloudfront_oai_iam_arn
 }
 
 module "cloudfront_app" {
-  source        = "../modules/cloudfront"
-  bucket_name   = module.s3_app.bucket_name
-  bucket_region = module.s3_app.bucket_region
-  aliase        = "app.${var.domain_name}"
+  source              = "../modules/cloudfront"
+  bucket_name         = module.s3_app.bucket_name
+  bucket_region       = module.s3_app.bucket_region
+  aliase              = "app.${var.domain_name}"
   acm_certificate_arn = data.aws_acm_certificate.cert_app_domain_name.arn
 }
 
 module "s3_production" {
-  source      = "../modules/s3"
-  bucket_name = "production-${var.s3_bucket_name}"
+  source                                = "../modules/s3"
+  bucket_name                           = "production-${var.s3_bucket_name}"
   cloudfront_origin_access_identity_arn = module.cloudfront_production.cloudfront_oai_iam_arn
 }
 
 module "cloudfront_production" {
-  source        = "../modules/cloudfront"
-  bucket_name   = module.s3_production.bucket_name
-  bucket_region = module.s3_production.bucket_region
-  aliase        = "production.${var.domain_name}"
+  source              = "../modules/cloudfront"
+  bucket_name         = module.s3_production.bucket_name
+  bucket_region       = module.s3_production.bucket_region
+  aliase              = "production.${var.domain_name}"
   acm_certificate_arn = data.aws_acm_certificate.cert_production_domain_name.arn
 }
 
