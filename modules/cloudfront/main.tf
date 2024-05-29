@@ -3,9 +3,6 @@ resource "aws_cloudfront_distribution" "static-www" {
     domain_name              = "${var.bucket_name}.s3.${var.bucket_region}.amazonaws.com"
     origin_id                = var.bucket_name
     origin_access_control_id = aws_cloudfront_origin_access_control.static-www.id
-    #s3_origin_config {
-    #  origin_access_identity = aws_cloudfront_origin_access_identity.static-www.cloudfront_access_identity_path
-    #}
   }
 
   enabled = true

@@ -3,11 +3,6 @@ variable "bucket_name" {
   type        = string
 }
 
-#variable "cloudfront_origin_access_identity_arn" {
-#  description = "The ARN of the CloudFront origin access identity."
-#  type        = string
-#}
-
 variable "cloudfront_distribution_arn" {
   description = "The ARN of the CloudFront origin access control."
   type        = string

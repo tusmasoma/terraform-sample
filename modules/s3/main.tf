@@ -23,25 +23,6 @@ resource "aws_s3_bucket_policy" "bucket" {
   policy = data.aws_iam_policy_document.static-www.json
 }
 
-#data "aws_iam_policy_document" "static-www" {
-#  statement {
-#    sid    = "Allow CloudFront"
-#    effect = "Allow"
-#    principals {
-#      type        = "AWS"
-#      identifiers = [var.cloudfront_origin_access_identity_arn]
-#    }
-#    actions = [
-#      "s3:GetObject",
-#      "s3:PutObject"
-#    ]
-#
-#    resources = [
-#      "${aws_s3_bucket.bucket.arn}/*"
-#    ]
-#  }
-#}
-
 data "aws_iam_policy_document" "static-www" {
   # CloudFront Distribution からのアクセスのみ許可
   statement {
