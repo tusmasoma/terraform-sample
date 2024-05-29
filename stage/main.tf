@@ -116,7 +116,7 @@ module "rds" {
 module "s3_app" {
   source      = "../modules/s3"
   bucket_name = "app-${var.s3_bucket_name}"
-  cloudfront_origin_access_identity_arn = module.cloudfront_app.cloudfront_oai_iam_arn
+  cloudfront_distribution_arn = module.cloudfront_app.cloudfront_distribution_arn
 }
 
 module "cloudfront_app" {
@@ -130,7 +130,7 @@ module "cloudfront_app" {
 module "s3_production" {
   source      = "../modules/s3"
   bucket_name = "production-${var.s3_bucket_name}"
-  cloudfront_origin_access_identity_arn = module.cloudfront_production.cloudfront_oai_iam_arn
+  cloudfront_distribution_arn = module.cloudfront_production.cloudfront_distribution_arn
 }
 
 module "cloudfront_production" {

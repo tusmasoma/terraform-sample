@@ -10,15 +10,15 @@ resource "aws_db_subnet_group" "rds_subnet_group" {
 }
 
 resource "aws_rds_cluster" "aurora_cluster" {
-  cluster_identifier      = "${var.env}-${var.system}-aurora-cluster"
-  engine                  = var.engine
-  engine_version          = var.engine_version
-  database_name           = var.db_name
-  master_username         = var.username
-  master_password         = var.password
-  db_subnet_group_name    = aws_db_subnet_group.rds_subnet_group.name
+  cluster_identifier   = "${var.env}-${var.system}-aurora-cluster"
+  engine               = var.engine
+  engine_version       = var.engine_version
+  database_name        = var.db_name
+  master_username      = var.username
+  master_password      = var.password
+  db_subnet_group_name = aws_db_subnet_group.rds_subnet_group.name
 
-  vpc_security_group_ids  = var.security_group_ids
+  vpc_security_group_ids          = var.security_group_ids
   db_cluster_parameter_group_name = aws_rds_cluster_parameter_group.aurora_cluster_param_group.name
 
   backup_retention_period = var.backup_retention_period
@@ -33,12 +33,12 @@ resource "aws_rds_cluster" "aurora_cluster" {
 }
 
 resource "aws_rds_cluster_instance" "aurora_instances" {
-  count               = var.instance_count
-  identifier          = "${var.env}-${var.system}-aurora-instance-${count.index}"
-  cluster_identifier  = aws_rds_cluster.aurora_cluster.id
-  instance_class      = var.instance_class
-  engine              = var.engine
-  engine_version      = var.engine_version
+  count                = var.instance_count
+  identifier           = "${var.env}-${var.system}-aurora-instance-${count.index}"
+  cluster_identifier   = aws_rds_cluster.aurora_cluster.id
+  instance_class       = var.instance_class
+  engine               = var.engine
+  engine_version       = var.engine_version
   db_subnet_group_name = aws_db_subnet_group.rds_subnet_group.name
 
   tags = {
@@ -73,9 +73,9 @@ resource "aws_cloudwatch_metric_alarm" "cpu_alarm" {
   statistic           = "Average"
   threshold           = 90
   alarm_description   = "This metric monitors RDS CPU utilization"
-  alarm_actions       = [] # TODO: Enable this when you have a valid SNS topic
-  ok_actions          = [] # TODO: Enable this when you have a valid SNS topic
-  actions_enabled      = false # TODO: Enable this when you have a valid SNS topic
+  alarm_actions       = []    # TODO: Enable this when you have a valid SNS topic
+  ok_actions          = []    # TODO: Enable this when you have a valid SNS topic
+  actions_enabled     = false # TODO: Enable this when you have a valid SNS topic
 
   dimensions = {
     DBInstanceIdentifier = aws_rds_cluster_instance.aurora_instances[count.index].id
@@ -93,9 +93,9 @@ resource "aws_cloudwatch_metric_alarm" "rds_high_connection_count" {
   statistic           = "Average"
   threshold           = 100
   alarm_description   = "This metric monitors RDS connection count"
-  alarm_actions       = [] # TODO: Enable this when you have a valid SNS topic
-  ok_actions          = [] # TODO: Enable this when you have a valid SNS topic
-  actions_enabled      = false # TODO: Enable this when you have a valid SNS topic
+  alarm_actions       = []    # TODO: Enable this when you have a valid SNS topic
+  ok_actions          = []    # TODO: Enable this when you have a valid SNS topic
+  actions_enabled     = false # TODO: Enable this when you have a valid SNS topic
 
   dimensions = {
     DBInstanceIdentifier = aws_rds_cluster_instance.aurora_instances[count.index].id

@@ -15,7 +15,7 @@ cidr_private = [
   "10.1.103.0/24"
 ]
 
-domain_name = "example.com"
+domain_name = "terraform-sample.com"
 
 ec2_instance_count = 1
 
@@ -41,4 +41,4 @@ rds_maintenance_window      = "sun:04:00-sun:05:00"
 rds_parameter_family        = "aurora-mysql5.7"
 rds_instance_count          = 1
 
-s3_bucket_name   = "example"
+s3_bucket_name = "example"

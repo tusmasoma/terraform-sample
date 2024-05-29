@@ -7,4 +7,4 @@
 *.tfbackup
 terraform.rc
 .terraform.lock.hcl
-
+stage/tfplan

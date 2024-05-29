@@ -41,4 +41,4 @@ rds_maintenance_window      = "sun:05:00-sun:07:00"
 rds_parameter_family        = "aurora-mysql5.7"
 rds_instance_count          = 2
 
-s3_bucket_name   = "prod-example"
+s3_bucket_name = "prod-example"
